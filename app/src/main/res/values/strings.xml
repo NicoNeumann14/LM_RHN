@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">LM_Praktikum_RHN</string>
+    <string name="Titel">DatenSammler:</string>
+    <string name="besch">Beschleunigung</string>
+    <string name="zeros">0.00</string>
+    <string name="zero">0</string>
+    <string name="x">X:</string>
+    <string name="y">Y:</string>
+    <string name="z">Z:</string>
+    <string name="mag">Mag:</string>
+    <string name="gyro">Gyroskop</string>
+    <string name="magneto">Magnetometer</string>
+    <string name="licht">Licht:</string>
+    <string name="druck">Luftdruck:</string>
+    <string name="proxi">Proximity:</string>
+    <string name="rate">Abtastrate</string>
+    <string name="pos">Positionierungs Daten</string>
+    <string name="altit">Altitude:</string>
+    <string name="accu">Accuracy:</string>
+    <string name="longi">Longitude:</string>
+    <string name="lati">Latitude:</string>
+    <string name="rbPositionTxt">Genauigkeit/Stromverbrauch</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="speichern">Speichern</string>
+    <string name="beschleuningung_in_m_s2">Beschleuningung in m/s2</string>
+    <string name="gyroskop_in_rad_s">Gyroskop in rad/s</string>
+    <string name="fastest">Fastest</string>
+    <string name="game">Game</string>
+    <string name="ui">UI</string>
+    <string name="normal">Normal</string>
+    <string name="u_i">Ui</string>
+</resources>
