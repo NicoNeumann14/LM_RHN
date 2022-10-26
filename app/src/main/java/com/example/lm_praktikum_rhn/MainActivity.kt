@@ -143,10 +143,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             index = 3
         }
 
-        //todo Berechtigung abfragen wenn der User sich für SamplinRate: Fastest entscheidet
-        if(index == 3){
-
-        }
 
         if(sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null){
            sensorManager.registerListener(this,sensorBeschleunigung,samplings[index])
