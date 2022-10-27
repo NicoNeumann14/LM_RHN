@@ -320,8 +320,9 @@
         android:id="@+id/LLPosition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rgPosition"
         app:layout_constraintTop_toBottomOf="@+id/tvPosition">
 
         <TextView
@@ -393,38 +394,16 @@
             tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvVerbrauchGenau"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:textStyle="italic"
-        android:text="@string/rbPositionTxt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LLPosition" />
-
-    <SeekBar
-        android:id="@+id/sbPosi"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:max="3"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVerbrauchGenau" />
-
     <Button
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
+        android:layout_marginBottom="10dp"
         android:enabled="false"
         android:text="@string/stop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sbPosi" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnStart"
@@ -433,7 +412,28 @@
         android:layout_marginEnd="64dp"
         android:text="@string/start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sbPosi" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rgPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPosition">
+
+        <RadioButton
+            android:id="@+id/rbNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Network" />
+
+        <RadioButton
+            android:id="@+id/rbGPS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPS" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
