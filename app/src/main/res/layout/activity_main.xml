@@ -475,7 +475,6 @@
             android:layout_height="wrap_content"
             android:text="@string/proximity" />
     </LinearLayout>
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <RadioGroup
         android:id="@+id/rgPosition"
@@ -490,13 +489,13 @@
             android:id="@+id/rbNetwork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Network" />
+            android:text="@string/network" />
 
         <RadioButton
             android:id="@+id/rbGPS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GPS" />
+            android:text="@string/gps" />
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
