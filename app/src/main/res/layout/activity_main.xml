@@ -218,10 +218,10 @@
 
         <TextView
             android:id="@+id/tvLicht"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/licht" />
+            android:text="@string/licht"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLichtRes"
@@ -234,8 +234,8 @@
             android:id="@+id/tvDruck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="@string/druck" />
+            android:text="@string/druck"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvDruckRes"
@@ -246,10 +246,10 @@
 
         <TextView
             android:id="@+id/tvProxi"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/proxi" />
+            android:text="@string/proxi"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvProxiRes"
@@ -259,26 +259,13 @@
             tools:ignore="TextContrastCheck" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvAbtast"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:textStyle="italic"
-        android:text="@string/rate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LLRest" />
-
     <RadioGroup
         android:id="@+id/rgSamplinsSensor"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checkedButton="@id/rbNormal"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAbtast">
 
         <RadioButton
@@ -289,13 +276,13 @@
 
         <RadioButton
             android:id="@+id/rbUi"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/u_i" />
 
         <RadioButton
             android:id="@+id/rbGame"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/game" />
 
@@ -314,7 +301,7 @@
         android:text="@string/pos"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgSamplinsSensor" />
+        app:layout_constraintTop_toBottomOf="@+id/llSensorBox" />
 
     <LinearLayout
         android:id="@+id/LLPosition"
@@ -399,7 +386,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginBottom="10dp"
         android:enabled="false"
         android:text="@string/stop"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -412,6 +398,83 @@
         android:layout_marginEnd="64dp"
         android:text="@string/start"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llSensorBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <CheckBox
+            android:id="@+id/cbBesch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/accelerometer" />
+
+        <CheckBox
+            android:id="@+id/cbGyro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gyroskop" />
+
+        <CheckBox
+            android:id="@+id/cbMagneto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/magnetometer" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAbtast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/rate"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LLRest" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textStyle="bold"
+        android:text="@string/sensor_check"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LLRest" />
+
+    <LinearLayout
+        android:id="@+id/llSensorBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/llSensorBox"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <CheckBox
+            android:id="@+id/cbLicht"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Licht" />
+
+        <CheckBox
+            android:id="@+id/cbDruck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luftdruck" />
+
+        <CheckBox
+            android:id="@+id/cbProxi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/proximity" />
+    </LinearLayout>
         app:layout_constraintEnd_toEndOf="parent" />
 
     <RadioGroup

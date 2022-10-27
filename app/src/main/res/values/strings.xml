@@ -30,4 +30,12 @@
     <string name="ui">UI</string>
     <string name="normal">Normal</string>
     <string name="u_i">Ui</string>
+    <string name="checkbox">CheckBox</string>
+    <string name="proximity">Proximity</string>
+    <string name="luftdruck">LuftDruck</string>
+    <string name="Licht">Licht</string>
+    <string name="sensor_check">Sensor Check</string>
+    <string name="magnetometer">Magnetometer</string>
+    <string name="gyroskop">Gyroskop</string>
+    <string name="accelerometer">Accelerometer</string>
 </resources>
