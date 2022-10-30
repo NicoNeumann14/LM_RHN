@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
@@ -36,6 +37,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var tvLicht:TextView
     private lateinit var tvDruck:TextView
     private lateinit var tvProxi:TextView
+
+    //Checkboxen
+    private lateinit var cbAcce:CheckBox
+    private lateinit var cbGyro:CheckBox
+    private lateinit var cbMagno:CheckBox
+    private lateinit var cbLicht:CheckBox
+    private lateinit var cbDruck:CheckBox
+    private lateinit var cbProxi:CheckBox
 
     //Sensoren
     private lateinit var sensorManager:SensorManager
@@ -78,6 +87,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         //RadioGroup
         rgSamplingSensor = findViewById(R.id.rgSamplinsSensor)
+
+        //Checkboxen
+        cbAcce = findViewById(R.id.cbBesch)
+        cbGyro = findViewById(R.id.cbGyro)
+        cbMagno = findViewById(R.id.cbMagneto)
+        cbLicht = findViewById(R.id.cbLicht)
+        cbDruck = findViewById(R.id.cbDruck)
+        cbProxi = findViewById(R.id.cbProxi)
 
         //Buttons
         btnStart = findViewById(R.id.btnStart)
@@ -144,27 +161,27 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
 
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null && cbAcce.isChecked){
            sensorManager.registerListener(this,sensorBeschleunigung,samplings[index])
         }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null && cbGyro.isChecked){
             sensorManager.registerListener(this,sensorGyroskop,samplings[index])
         }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null && cbMagno.isChecked){
             sensorManager.registerListener(this,sensorMagnometer,samplings[index])
         }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null && cbLicht.isChecked){
             sensorManager.registerListener(this,sensorLicht,samplings[index])
         }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE) != null && cbDruck.isChecked){
             sensorManager.registerListener(this,sensorDruck,samplings[index])
         }
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null){
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null && cbProxi.isChecked){
             sensorManager.registerListener(this,sensorProxi,samplings[index])
         }
     }
@@ -241,5 +258,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         tvMagnometer[1].text = "${"%.2f".format(magnometerData!!.y)}"
         tvMagnometer[2].text = "${"%.2f".format(magnometerData!!.z)}"
     }
+
+
 
 }
