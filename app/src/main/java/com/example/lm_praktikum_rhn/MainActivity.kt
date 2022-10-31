@@ -2,21 +2,28 @@ package com.example.lm_praktikum_rhn
 
 import android.R.attr.path
 import android.content.Context
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Environment
+import android.os.NetworkOnMainThreadException
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.util.jar.Manifest
 import kotlin.math.sqrt
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
     //Buttons
     private lateinit var btnStart: Button
@@ -24,6 +31,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     //RadioGroup
     private lateinit var rgSamplingSensor:RadioGroup
+    private lateinit var rgLocation:RadioGroup
+
+    //RadioButtons
+    private lateinit var rbNetwork:RadioButton
+    private lateinit var rbGPS:RadioButton
+
+    //LocationManager
+    private lateinit var locationManager:LocationManager
 
     //View id´s
     private var idBeschleunigung:ArrayList<Int> = arrayListOf(R.id.tvBeschX,R.id.tvBeschY,R.id.tvBeschZ,R.id.tvBeschMag)
@@ -37,6 +52,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var tvLicht:TextView
     private lateinit var tvDruck:TextView
     private lateinit var tvProxi:TextView
+    private lateinit var tvLati:TextView
+    private lateinit var tvAlti:TextView
+    private lateinit var tvLongi:TextView
+    private lateinit var tvAccu:TextView
+
+
 
     //Checkboxen
     private lateinit var cbAcce:CheckBox
@@ -71,6 +92,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_main)
         initViews()
         initSensoren()
+        initLocation()
     }
 
     private fun initViews(){
@@ -87,9 +109,18 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         tvLicht = findViewById(R.id.tvLichtRes)
         tvDruck = findViewById(R.id.tvDruckRes)
         tvProxi = findViewById(R.id.tvProxiRes)
+        tvLongi = findViewById(R.id.tvLongiR)
+        tvAlti = findViewById(R.id.tvAltiR)
+        tvLati = findViewById(R.id.tvLatiR)
+        tvAccu = findViewById(R.id.tvAccuracyR)
 
         //RadioGroup
         rgSamplingSensor = findViewById(R.id.rgSamplinsSensor)
+        rgLocation = findViewById(R.id.rgPosition)
+
+        //RadioButtons
+        rbGPS = findViewById(R.id.rbGPS)
+        rbNetwork = findViewById(R.id.rbNetwork)
 
         //Checkboxen
         cbAcce = findViewById(R.id.cbBesch)
@@ -112,17 +143,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         btnStop.setOnClickListener {
             unregisterListener()
-            schreibinTxt(jsonArray)
+            schreibinTxt()
             btnStart.isEnabled = true
             btnStop.isEnabled = false
         }
     }
 
+    private fun initLocation(){
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
 
-    private fun schreibinTxt(jasonArray:JSONArray){
-        var i=0
+
+    private fun schreibinTxt(){
         var fileName = Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_DOWNLOADS);
+            Environment.DIRECTORY_DOWNLOADS)
         var fileS = File(fileName,"test.txt")
 
         fileS.printWriter().use { out->
@@ -206,6 +240,21 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         if(sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null && cbProxi.isChecked){
             sensorManager.registerListener(this,sensorProxi,samplings[index])
         }
+
+        //Location ab hier
+
+        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
+        }
+        val selectedRadioButoon:Int = rgLocation.checkedRadioButtonId
+        if(rbNetwork.id == selectedRadioButoon){
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0L,0f,this)
+        }
+        if(rbGPS.id == selectedRadioButoon){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0L,0f,this)
+        }
+
+
     }
     private fun unregisterListener(){
         sensorManager.unregisterListener(this,sensorBeschleunigung)
@@ -214,6 +263,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.unregisterListener(this,sensorLicht)
         sensorManager.unregisterListener(this,sensorDruck)
         sensorManager.unregisterListener(this,sensorProxi)
+        locationManager.removeUpdates(this)
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
@@ -320,6 +370,22 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         jsonArray.put(jasonObject)
     }
 
+    override fun onLocationChanged(p0: Location) {
+        tvLati.text = "${"%.5f".format(p0.latitude)}"
+        tvAlti.text = "${"%.5f".format(p0.altitude)}"
+        tvLongi.text = "${"%.5f".format(p0.longitude)}"
+        tvAccu.text = "${"%.2f".format(p0.accuracy)}"
+
+        val jasonObjekt = JSONObject()
+        jasonObjekt.put("SensorTyp",p0.provider)
+        jasonObjekt.put("Latitude",p0.latitude)
+        jasonObjekt.put("Longitude",p0.longitude)
+        jasonObjekt.put("Altitude",p0.altitude)
+        jasonObjekt.put("Accuracy",p0.accuracy)
+        jasonObjekt.put("TimeStamp",p0.time)
+
+        jsonArray.put(jasonObjekt)
+    }
 
 
 }
