@@ -1,20 +1,20 @@
 package com.example.lm_praktikum_rhn
 
+import android.R.attr.path
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.SeekBar
-import android.widget.TextView
-import org.w3c.dom.Text
+import android.os.Environment
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.File
 import kotlin.math.sqrt
+
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private var gyroskopData:SensorData? = null
     private var magnometerData:SensorData? = null
 
+    //JSONArray
+    private var jsonArray = JSONArray()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -109,10 +112,29 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         btnStop.setOnClickListener {
             unregisterListener()
+            schreibinTxt(jsonArray)
             btnStart.isEnabled = true
             btnStop.isEnabled = false
         }
     }
+
+
+    private fun schreibinTxt(jasonArray:JSONArray){
+        var i=0
+        var fileName = Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DOWNLOADS);
+        var fileS = File(fileName,"test.txt")
+
+        fileS.printWriter().use { out->
+
+            for(i in 0 until jsonArray.length()){
+
+                out.println(jsonArray[i].toString())
+            }
+
+        }
+    }
+
     private fun initSensoren(){
         //Manager
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -195,6 +217,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
+       val jasonObjekt = JSONObject()
         if(p0!!.sensor.type == Sensor.TYPE_LINEAR_ACCELERATION){
             getBeschleunigungsData(p0)
         }else if(p0.sensor.type == Sensor.TYPE_GYROSCOPE){
@@ -203,15 +226,30 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             getMagnetoData(p0)
         }else if(p0.sensor.type == Sensor.TYPE_LIGHT){
             tvLicht.text = "${p0!!.values[0]}"
+            jasonObjekt.put("SensorTyp","Licht")
+            jasonObjekt.put("Lichtstarke",p0!!.values[0])
+            jasonObjekt.put("TimeStamp",p0!!.timestamp)
+            jsonArray.put(jasonObjekt)
         }else if(p0.sensor.type == Sensor.TYPE_PRESSURE){
             tvDruck.text = "${"%.2f".format(p0!!.values[0])}"
+            jasonObjekt.put("SensorTyp","Bar")
+            jasonObjekt.put("Druck",p0!!.values[0])
+            jasonObjekt.put("TimeStamp",p0!!.timestamp)
+            jsonArray.put(jasonObjekt)
         }else if(p0.sensor.type == Sensor.TYPE_PROXIMITY){
             tvProxi.text = "${p0!!.values[0]}"
+            jasonObjekt.put("SensorTyp","Proximiter")
+            jasonObjekt.put("Bildschirmabstand",p0!!.values[0])
+            jasonObjekt.put("TimeStamp",p0!!.timestamp)
+            jsonArray.put(jasonObjekt)
         }
     }
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         //notUsedNow
     }
+
+
+
 
     private fun getBeschleunigungsData(p0: SensorEvent?){
         if(beschleunigungsData == null){
@@ -222,6 +260,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             beschleunigungsData!!.z = p0!!.values[2]
             beschleunigungsData!!.timestamp = p0!!.timestamp
         }
+
+        val jasonObject = JSONObject()
+        jasonObject.put("SensorTyp","Accelometer")
+        jasonObject.put("X",beschleunigungsData!!.x)
+        jasonObject.put("Y",beschleunigungsData!!.y)
+        jasonObject.put("Z",beschleunigungsData!!.z)
+        jasonObject.put("TimeStamp",beschleunigungsData!!.timestamp)
+        jsonArray.put(jasonObject)
+
 
         tvBeschleunigung[0].text = "${"%.2f".format(beschleunigungsData!!.x)}"
         tvBeschleunigung[1].text = "${"%.2f".format(beschleunigungsData!!.y)}"
@@ -243,6 +290,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         tvGyroskop[0].text = "${"%.2f".format(gyroskopData!!.x)}"
         tvGyroskop[1].text = "${"%.2f".format(gyroskopData!!.y)}"
         tvGyroskop[2].text = "${"%.2f".format(gyroskopData!!.z)}"
+        val jasonObject = JSONObject()
+        jasonObject.put("SensorTyp", "Gyroskop")
+        jasonObject.put("X",gyroskopData!!.x)
+        jasonObject.put("Y",gyroskopData!!.y)
+        jasonObject.put("Z",gyroskopData!!.z)
+        jasonObject.put("TimeStamp",gyroskopData!!.timestamp)
+        jsonArray.put(jasonObject)
     }
     private fun getMagnetoData(p0: SensorEvent?){
         if(magnometerData == null){
@@ -257,6 +311,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         tvMagnometer[0].text = "${"%.2f".format(magnometerData!!.x)}"
         tvMagnometer[1].text = "${"%.2f".format(magnometerData!!.y)}"
         tvMagnometer[2].text = "${"%.2f".format(magnometerData!!.z)}"
+        val jasonObject = JSONObject()
+        jasonObject.put("SensorTyp", "Magnetometer")
+        jasonObject.put("X",magnometerData!!.x)
+        jasonObject.put("Y",magnometerData!!.y)
+        jasonObject.put("Z",magnometerData!!.z)
+        jasonObject.put("TimeStamp",magnometerData!!.timestamp)
+        jsonArray.put(jasonObject)
     }
 
 
